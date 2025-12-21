@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Successful</title>
+
+    <style>
+        body{
+            margin:0;
+            min-height:100vh;
+            background:#000;
+            color:white;
+            font-family:Arial, sans-serif;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+
+        .success-box{
+            background:#111;
+            padding:40px;
+            border-radius:20px;
+            text-align:center;
+            box-shadow:0 0 40px rgba(46,204,113,0.4);
+            width:420px;
+        }
+
+        .check{
+            font-size:60px;
+            color:#2ecc71;
+            margin-bottom:20px;
+        }
+
+        h2{
+            margin-bottom:10px;
+        }
+
+        .details{
+            font-size:14px;
+            color:#ccc;
+            margin:20px 0;
+        }
+
+        .btn{
+            display:inline-block;
+            margin-top:20px;
+            padding:12px 28px;
+            background:#e50914;
+            color:white;
+            border-radius:30px;
+            text-decoration:none;
+        }
+
+        .btn:hover{
+            background:#ff1f2d;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="success-box">
+
+    <div class="check">✔</div>
+
+    <h2>Payment Successful!</h2>
+
+    <div class="details">
+        🎬 {{ movie.title }} <br>
+        🎟 Seats: {{ seats }} <br>
+        💰 Paid: ₹{{ amount }} <br>
+        💳 Method: {{ method }}
+    </div>
+
+    <a href="{% url 'movies' %}" class="btn">
+        Back to Movies
+    </a>
+
+</div>
+
+</body>
+</html>

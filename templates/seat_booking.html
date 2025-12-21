@@ -1,0 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Seats | {{ movie.title }}</title>
+
+    <style>
+        body{
+            margin:0;
+            min-height:100vh;
+            font-family:Arial, sans-serif;
+            color:white;
+
+            /* 🎬 FULL CLEAR CINEMA BACKGROUND */
+            background: url("{% static 'C:\Users\sbvsa\OneDrive\Desktop\WEB project\cineverse\static\images\movie-cinema-hall-interior-with-rows-seats-ai-generative_407474-22993.avif' %}");
+            background-size:cover;
+            background-position:center;
+            background-repeat:no-repeat;
+        }
+
+        .container{
+            width:90%;
+            margin:auto;
+            padding:30px 0 120px;
+            border-radius:16px;
+            /* ❌ NO OVERLAY, NO BLUR */
+        }
+
+        h2{
+            margin-bottom:20px;
+            text-shadow:0 2px 8px rgba(0,0,0,0.9);
+        }
+
+        .section-title{
+            margin:30px 0 12px;
+            font-weight:bold;
+            text-shadow:0 2px 6px rgba(0,0,0,0.9);
+        }
+
+        .price{ color:#ff4c4c; }
+
+        /* ===== SEATS ===== */
+        .seat-row{
+            display:flex;
+            gap:10px;
+            justify-content:center;
+            margin-bottom:10px;
+        }
+
+        .seat{
+            width:36px;
+            height:36px;
+            border-radius:8px;
+            border:1px solid #666;
+            background:rgba(0,0,0,0.65);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            cursor:pointer;
+            font-size:13px;
+            transition:all 0.2s ease;
+        }
+
+        .seat:hover{ background:rgba(255,255,255,0.15); }
+
+        .seat.selected{
+            background:#e50914;
+            border-color:#e50914;
+            animation:bubble 0.35s ease;
+        }
+
+        @keyframes bubble{
+            0%{ transform:scale(1); }
+            50%{ transform:scale(1.3); }
+            100%{ transform:scale(1); }
+        }
+
+        /* ===== SCREEN ===== */
+        .screen{
+            text-align:center;
+            margin:40px 0 10px;
+            color:#e50914;
+            font-size:12px;
+            letter-spacing:2px;
+            text-shadow:0 2px 6px rgba(0,0,0,0.8);
+        }
+
+        .screen-bar{
+            height:4px;
+            background:#e50914;
+            width:60%;
+            margin:auto;
+            border-radius:4px;
+        }
+
+        /* ===== CHECKOUT BAR ===== */
+        .checkout{
+            position:fixed;
+            bottom:0;
+            left:0;
+            width:100%;
+            background:rgba(0,0,0,0.6);
+            backdrop-filter: blur(6px);
+            border-top:1px solid #222;
+            padding:18px 30px;
+            display:none;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .checkout span{ font-size:16px; }
+
+        .pay-btn{
+            background:#e50914;
+            border:none;
+            padding:14px 30px;
+            border-radius:30px;
+            color:white;
+            font-size:16px;
+            cursor:pointer;
+            margin-right:120px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>{{ movie.title }}</h2>
+
+    <!-- VIP -->
+    <div class="section-title">VIP <span class="price">₹800</span></div>
+    <div class="seat-row">
+        {% for i in "12345" %}
+            <div class="seat" data-price="800">V{{ forloop.counter }}</div>
+        {% endfor %}
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="section-title">PREMIUM <span class="price">₹420</span></div>
+    {% for row in "1234" %}
+    <div class="seat-row">
+        {% for i in "12345678" %}
+            <div class="seat" data-price="420">P{{ forloop.counter }}</div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+    <!-- EXECUTIVE -->
+    <div class="section-title">EXECUTIVE <span class="price">₹400</span></div>
+    {% for row in "123" %}
+    <div class="seat-row">
+        {% for i in "123456" %}
+            <div class="seat" data-price="400">E{{ forloop.counter }}</div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+    <div class="screen">SCREEN THIS WAY</div>
+    <div class="screen-bar"></div>
+
+</div>
+
+<!-- ===== CHECKOUT BAR ===== -->
+<form method="get" action="{% url 'payment' movie.id %}">
+    <div class="checkout" id="checkout">
+        <span id="summary">0 Seats • ₹0</span>
+
+        <input type="hidden" name="seats" id="seat-count-input">
+        <input type="hidden" name="amount" id="amount-input">
+
+        <button type="submit" class="pay-btn">Proceed to Pay</button>
+    </div>
+</form>
+
+<script>
+const seats = document.querySelectorAll(".seat");
+const checkout = document.getElementById("checkout");
+const summary = document.getElementById("summary");
+
+const seatInput = document.getElementById("seat-count-input");
+const amountInput = document.getElementById("amount-input");
+
+seats.forEach(seat => {
+    seat.addEventListener("click", () => {
+        seat.classList.toggle("selected");
+        updateTotal();
+    });
+});
+
+function updateTotal(){
+    let selected = document.querySelectorAll(".seat.selected");
+    let total = 0;
+
+    selected.forEach(seat => {
+        total += parseInt(seat.dataset.price);
+    });
+
+    if(selected.length > 0){
+        checkout.style.display = "flex";
+        summary.innerText = `${selected.length} Seat(s) • ₹${total}`;
+        seatInput.value = selected.length;
+        amountInput.value = total;
+    } else {
+        checkout.style.display = "none";
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Show | {{ movie.title }}</title>
+
+    <style>
+        body{
+            margin:0;
+            background:#0b0b0b;
+            font-family:Arial, sans-serif;
+            color:white;
+        }
+
+        .container{
+            width:88%;
+            margin:auto;
+            padding:30px 0;
+        }
+
+        /* ===== LOCATION BOX ===== */
+        .location-box{
+            background:#111;
+            border:1px solid #222;
+            padding:16px 20px;
+            border-radius:12px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:25px;
+        }
+
+        .location-text{ color:#ddd; }
+
+        .loc-btn{
+            background:#e50914;
+            border:none;
+            padding:10px 18px;
+            border-radius:20px;
+            color:white;
+            cursor:pointer;
+        }
+
+        /* ===== MOVIE HEADER ===== */
+        .movie-title{
+            font-size:30px;
+            font-weight:bold;
+        }
+
+        .movie-meta{
+            color:#bbb;
+            margin-bottom:20px;
+        }
+
+        /* ===== DATES ===== */
+        .dates{
+            display:flex;
+            gap:12px;
+            margin:25px 0;
+        }
+
+        .date{
+            width:70px;
+            padding:12px 0;
+            border-radius:10px;
+            text-align:center;
+            border:1px solid #333;
+            cursor:pointer;
+            background:#111;
+        }
+
+        .date.active{
+            background:#e50914;
+            border-color:#e50914;
+        }
+
+        /* ===== FILTERS ===== */
+        .filters{ display:flex; gap:12px; margin-bottom:20px; }
+
+        .filter{
+            padding:8px 14px;
+            border-radius:20px;
+            border:1px solid #333;
+            background:#111;
+            cursor:pointer;
+        }
+
+        .filter.active{
+            background:#e50914;
+            border-color:#e50914;
+        }
+
+        /* ===== TIMES ===== */
+        .times{
+            display:flex;
+            gap:14px;
+            margin-top:14px;
+        }
+
+        .time{
+            padding:12px 24px;
+            border-radius:10px;
+            border:1px solid #555;
+            cursor:pointer;
+            background:#111;
+            color:white;
+            font-size:14px;
+        }
+
+        .time:hover{
+            background:#e50914;
+            border-color:#e50914;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LOCATION -->
+    <div class="location-box">
+        <div class="location-text" id="location-text">
+            Detect your location to see nearby theatres
+        </div>
+        <button class="loc-btn" onclick="getLocation()">📍 Use my location</button>
+    </div>
+
+    <!-- MOVIE INFO -->
+    <div class="movie-title">{{ movie.title }}</div>
+    <div class="movie-meta">
+        {{ movie.genre }} • ⭐ {{ movie.rating }} • English
+    </div>
+
+    <!-- DATES -->
+    <div class="dates">
+        <div class="date active" data-date="2025-12-19" onclick="selectDate(this)">19<br>Fri</div>
+        <div class="date" data-date="2025-12-20" onclick="selectDate(this)">20<br>Sat</div>
+        <div class="date" data-date="2025-12-21" onclick="selectDate(this)">21<br>Sun</div>
+    </div>
+
+    <!-- FILTER -->
+    <div class="filters">
+        <div class="filter" onclick="toggleAfter11(this)">After 11 PM</div>
+    </div>
+
+    <!-- THEATRE -->
+    <div class="theatre">
+        <h3>INOX Cinemas</h3>
+
+        <div class="times" id="time-list">
+            <div class="time" data-time="10:20 PM" onclick="bookShow(this)">10:20 PM</div>
+            <div class="time" data-time="11:15 PM" onclick="bookShow(this)">11:15 PM</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ================= JS ================= -->
+<script>
+let selectedDate = document.querySelector(".date.active").dataset.date;
+let after11 = false;
+
+function selectDate(el){
+    document.querySelectorAll(".date").forEach(d => d.classList.remove("active"));
+    el.classList.add("active");
+    selectedDate = el.dataset.date;
+}
+
+function toggleAfter11(el){
+    after11 = !after11;
+    el.classList.toggle("active");
+
+    document.querySelectorAll(".time").forEach(t=>{
+        const time = t.dataset.time;
+        const hour = parseInt(time.split(":")[0]);
+        const isPM = time.includes("PM");
+
+        if(after11){
+            if(!(isPM && hour >= 11)){
+                t.style.display = "none";
+            }
+        } else {
+            t.style.display = "block";
+        }
+    });
+}
+
+function bookShow(el){
+    const time = el.dataset.time;
+    const movieId = "{{ movie.id }}";
+
+    window.location.href =
+        `/movies/seats/${movieId}/?date=${selectedDate}&time=${time}`;
+}
+
+/* LOCATION */
+function getLocation(){
+    navigator.geolocation.getCurrentPosition(pos=>{
+        document.getElementById("location-text").innerText =
+            "Showing theatres near you";
+    });
+}
+</script>
+
+</body>
+</html>

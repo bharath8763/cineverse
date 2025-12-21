@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment | {{ movie.title }}</title>
+
+    <style>
+        body{
+            margin:0;
+            min-height:100vh;
+            font-family:Arial, sans-serif;
+            color:white;
+
+            background:
+                linear-gradient(
+                    rgba(0,0,0,0.35),
+                    rgba(0,0,0,0.35)
+                ),
+                url("{% static 'images/happiness-and-money-1.webp' %}");
+
+            background-size:cover;
+            background-position:center;
+            background-repeat:no-repeat;
+        }
+
+        .container{
+            width:420px;
+            margin:80px auto;
+            background:rgba(0,0,0,0.55);
+            backdrop-filter: blur(10px);
+            padding:30px;
+            border-radius:16px;
+            box-shadow:0 0 40px rgba(229,9,20,0.4);
+        }
+
+        h2{
+            text-align:center;
+            margin-bottom:20px;
+            color:#e50914;
+        }
+
+        .row{
+            display:flex;
+            justify-content:space-between;
+            margin-bottom:12px;
+            font-size:15px;
+        }
+
+        .total{
+            margin-top:20px;
+            font-size:18px;
+            font-weight:bold;
+            border-top:1px solid rgba(255,255,255,0.2);
+            padding-top:12px;
+        }
+
+        /* PAYMENT METHODS */
+        .method{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:14px;
+            margin-top:14px;
+            border-radius:12px;
+            border:1px solid #333;
+            background:#0b0b0b;
+            cursor:pointer;
+        }
+
+        .method:hover{
+            border-color:#e50914;
+        }
+
+        .method input{
+            accent-color:#e50914;
+        }
+
+        .pay-btn{
+            width:100%;
+            margin-top:25px;
+            padding:14px;
+            border:none;
+            border-radius:30px;
+            font-size:16px;
+            background:#e50914;
+            color:white;
+            cursor:pointer;
+        }
+
+        .pay-btn:hover{
+            background:#ff1a1a;
+        }
+
+        .note{
+            margin-top:12px;
+            font-size:12px;
+            color:#aaa;
+            text-align:center;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Choose Payment Method</h2>
+
+    <!-- SUMMARY -->
+    <div class="row"><span>Movie</span><span>{{ movie.title }}</span></div>
+    <div class="row"><span>Date</span><span>{{ date }}</span></div>
+    <div class="row"><span>Time</span><span>{{ time }}</span></div>
+    <div class="row"><span>Seats</span><span>{{ seats }}</span></div>
+
+    <div class="row total">
+        <span>Total</span>
+        <span>₹{{ amount }}</span>
+    </div>
+
+    <!-- ✅ DJANGO FORM -->
+    <form method="post">
+        {% csrf_token %}
+
+        <label class="method">
+            <input type="radio" name="method" value="UPI" required>
+            UPI (GPay / PhonePe / Paytm)
+        </label>
+
+        <label class="method">
+            <input type="radio" name="method" value="Card">
+            Credit / Debit Card
+        </label>
+
+        <label class="method">
+            <input type="radio" name="method" value="NetBanking">
+            Net Banking
+        </label>
+
+        <button type="submit" class="pay-btn">
+            Pay ₹{{ amount }}
+        </button>
+    </form>
+
+    <div class="note">
+        🔒 Secure payment • No data stored
+    </div>
+
+</div>
+
+</body>
+</html>

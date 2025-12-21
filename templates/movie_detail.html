@@ -1,0 +1,178 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ movie.title }} | CineVerse</title>
+
+    <style>
+        body{
+            margin:0;
+            font-family:Arial, sans-serif;
+            background:#000; /* ✅ FULL BLACK BACKGROUND */
+            color:white;
+        }
+
+        /* ================= HERO WRAPPER ================= */
+        .hero-wrapper{
+            padding-top:100px; /* ✅ MOVE BANNER DOWN */
+            display:flex;
+            justify-content:center;
+        }
+
+        /* ================= HERO ================= */
+        .hero{
+            position:relative;
+            height:480px;
+            width:92%;
+            border-radius:18px; /* ✅ ROUNDED EDGES */
+            overflow:hidden;    /* ✅ REQUIRED FOR ROUNDING */
+            background:
+                linear-gradient(
+                    to right,
+                    rgba(0,0,0,0.95) 25%,
+                    rgba(0,0,0,0.7) 45%,
+                    rgba(0,0,0,0.3) 65%,
+                    rgba(0,0,0,0)
+                ),
+                url("{% if movie.banner %}{{ movie.banner.url }}{% else %}{{ movie.poster.url }}{% endif %}");
+            background-size:cover;
+            background-position:center;
+            display:flex;
+            align-items:center;
+            padding:0 100px;
+        }
+
+        .hero-content{
+            display:flex;
+            gap:40px;
+            align-items:flex-start;
+        }
+
+        /* ================= POSTER ================= */
+        .poster{
+            width:230px;
+            border-radius:12px;
+            box-shadow:0 15px 40px rgba(0,0,0,0.8);
+        }
+
+        /* ================= DETAILS ================= */
+        .details h1{
+            font-size:38px;
+            margin:0 0 12px;
+        }
+
+        .rating-box{
+            display:flex;
+            align-items:center;
+            gap:16px;
+            background:#1f2533;
+            padding:14px 18px;
+            border-radius:8px;
+            width:fit-content;
+            margin-bottom:18px;
+        }
+
+        .rating{
+            font-size:18px;
+            font-weight:bold;
+        }
+
+        .rate-btn{
+            background:#fff;
+            color:#000;
+            border:none;
+            padding:6px 14px;
+            border-radius:6px;
+            cursor:pointer;
+        }
+
+        .meta{
+            font-size:14px;
+            margin-bottom:12px;
+            opacity:0.9;
+        }
+
+        .tags span{
+            display:inline-block;
+            background:#e6e6e6;
+            color:#000;
+            padding:6px 12px;
+            border-radius:6px;
+            margin-right:8px;
+            font-size:13px;
+        }
+
+        .book-btn{
+            margin-top:24px;
+            background:#c81e3d;
+            color:white;
+            border:none;
+            padding:14px 40px;
+            font-size:16px;
+            border-radius:8px;
+            cursor:pointer;
+        }
+
+        /* ================= ABOUT ================= */
+        .about{
+            padding:50px 120px;
+        }
+
+        .about h2{
+            margin-bottom:12px;
+        }
+
+        .about p{
+            max-width:900px;
+            line-height:1.7;
+            color:#ccc;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= HERO ================= -->
+<div class="hero-wrapper">
+    <div class="hero">
+        <div class="hero-content">
+
+            <img class="poster" src="{{ movie.poster.url }}">
+
+            <div class="details">
+                <h1>{{ movie.title }}</h1>
+
+                <div class="rating-box">
+                    <div class="rating">⭐ {{ movie.rating }}/10</div>
+                    <button class="rate-btn">Rate now</button>
+                </div>
+
+                <div class="meta">
+                    {{ movie.duration|default:"2h 30m" }} •
+                    {{ movie.genre }} •
+                    {{ movie.language|default:"English" }}
+                </div>
+
+                <div class="tags">
+                    <span>2D</span>
+                    <span>IMAX</span>
+                    <span>4DX</span>
+                </div>
+
+                <a href="{% url 'book_movie' movie.id %}">
+                    <button class="book-btn">Book tickets</button>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ================= ABOUT ================= -->
+<div class="about">
+    <h2>About the movie</h2>
+    <p>{{ movie.description }}</p>
+</div>
+
+</body>
+</html>

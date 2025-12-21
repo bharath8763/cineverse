@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Seats | {{ movie.title }}</title>
+    <style>
+        body{
+            background:#0b0b0b;
+            color:white;
+            font-family:Arial;
+            text-align:center;
+            padding:30px;
+        }
+
+        h1{
+            margin-bottom:10px;
+        }
+
+        .screen{
+            background:#e50914;
+            height:30px;
+            width:60%;
+            margin:20px auto;
+            border-radius:5px;
+            box-shadow:0 0 20px rgba(229,9,20,0.7);
+        }
+
+        .seats{
+            display:grid;
+            grid-template-columns:repeat(10, 1fr);
+            gap:10px;
+            max-width:500px;
+            margin:40px auto;
+        }
+
+        .seat{
+            width:35px;
+            height:35px;
+            background:#444;
+            border-radius:6px;
+            cursor:pointer;
+            transition:0.2s;
+        }
+
+        .seat:hover{
+            transform:scale(1.15);
+            background:#777;
+        }
+
+        .seat.selected{
+            background:#e50914;
+        }
+
+        .seat.booked{
+            background:#222;
+            cursor:not-allowed;
+        }
+
+        button{
+            margin-top:30px;
+            padding:14px 40px;
+            background:#e50914;
+            color:white;
+            border:none;
+            border-radius:30px;
+            font-size:16px;
+            cursor:pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>{{ movie.title }}</h1>
+<p>Select your seats</p>
+
+<div class="screen"></div>
+
+<div class="seats">
+    {% for i in "12345678901234567890" %}
+        <div class="seat"></div>
+    {% endfor %}
+</div>
+
+<button onclick="confirmBooking()">Confirm Booking</button>
+
+<script>
+    const seats = document.querySelectorAll('.seat');
+
+    seats.forEach(seat => {
+        seat.addEventListener('click', () => {
+            if (!seat.classList.contains('booked')) {
+                seat.classList.toggle('selected');
+            }
+        });
+    });
+
+    function confirmBooking(){
+        alert("Seats booked successfully! 🎉");
+    }
+</script>
+
+</body>
+</html>

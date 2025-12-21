@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CINEXUS</title>
+    <style>
+        body{
+            margin:0;
+            background:black;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+            overflow:hidden;
+            font-family:Arial, sans-serif;
+        }
+
+        .container{
+            position:relative;
+        }
+
+        .logo{
+            font-size:64px;
+            letter-spacing:8px;
+            color:#e50914;
+            opacity:0;
+            animation: reveal 2s forwards;
+        }
+
+        .light{
+            position:absolute;
+            top:-50%;
+            left:-100%;
+            width:200%;
+            height:200%;
+            background:linear-gradient(
+                120deg,
+                transparent 40%,
+                rgba(229,9,20,0.6),
+                transparent 60%
+            );
+            animation: sweep 2s ease;
+        }
+
+        @keyframes reveal{
+            0%{
+                opacity:0;
+                transform:scale(0.9);
+            }
+            60%{
+                opacity:1;
+            }
+            100%{
+                opacity:1;
+                transform:scale(1);
+            }
+        }
+
+        @keyframes sweep{
+            0%{
+                transform:translateX(-100%);
+            }
+            100%{
+                transform:translateX(100%);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="light"></div>
+    <div class="logo">CINEXUS</div>
+</div>
+
+<script>
+    // Redirect just AFTER animation ends
+    setTimeout(function(){
+        window.location.href = "/login/";
+    }, 2100);  // 2.1 seconds
+</script>
+
+</body>
+</html>
