@@ -1,20 +1,17 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse 
 from django.conf import settings
 from django.conf.urls.static import static
 
 
 def splash(request):
     return render(request, 'splash.html')
-def home(request):
-    return HttpResponse("🎉 Cineverse is Live!")
 
 
 
-urlpatterns = [
-    path('', home), 
+urlpatterns = [ 
     path('', splash, name='splash'),
     path('', include('users.urls')),
     path('movies/', include('movies.urls')),
