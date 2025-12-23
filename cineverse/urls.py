@@ -8,6 +8,9 @@ from django.conf.urls.static import static
 
 def splash(request):
     return render(request, 'splash.html')
+def home(request):
+    return HttpResponse("🎉 Cineverse is Live!")
+
 
 
 urlpatterns = [
