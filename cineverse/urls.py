@@ -11,6 +11,7 @@ def splash(request):
 
 
 urlpatterns = [
+    path('', home), 
     path('', splash, name='splash'),
     path('', include('users.urls')),
     path('movies/', include('movies.urls')),
